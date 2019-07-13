@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="NumberSelector">
+        <!-- 选数器的最大值 -->
+        <attr name="max_number" format="dimension|reference"/>
+        <!-- 选数器的最小值 -->
+        <attr name="min_number" format="dimension|reference"/>
+        <!-- 选数器跳动间隔 -->
+        <attr name="range" format="dimension|reference"/>
+    </declare-styleable>
+
+</resources>
