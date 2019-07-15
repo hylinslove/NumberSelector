@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="7dp"
+    android:layout_height="15dp">
+
+    <ImageView
+        android:gravity="center"
+        android:scaleType="fitXY"
+        android:src="@drawable/degree"
+        android:id="@+id/item_degree_text"
+        android:layout_width="7dp"
+        android:minHeight="15dp"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

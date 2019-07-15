@@ -3,11 +3,13 @@
 
     <declare-styleable name="NumberSelector">
         <!-- 选数器的最大值 -->
-        <attr name="max_number" format="dimension|reference"/>
+        <attr name="max_number" format="integer|reference"/>
         <!-- 选数器的最小值 -->
-        <attr name="min_number" format="dimension|reference"/>
+        <attr name="min_number" format="integer|reference"/>
         <!-- 选数器跳动间隔 -->
         <attr name="range" format="dimension|reference"/>
+        <!-- 边框宽度 -->
+        <attr name="stroke_width" format="integer|reference"/>
     </declare-styleable>
 
 </resources>
