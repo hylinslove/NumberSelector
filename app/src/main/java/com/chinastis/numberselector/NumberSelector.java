@@ -2,6 +2,8 @@ package com.chinastis.numberselector;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -69,10 +71,24 @@ public class NumberSelector extends LinearLayout {
     private Drawable degree3;
 
 
+    private float originalNumber;
     private OnNumberChangeListener onNumberChangeListener;
+    private Bitmap bitmap;
 
     public void setOnNumberChangeListener(OnNumberChangeListener listener) {
         this.onNumberChangeListener = listener;
+    }
+
+    public void setOriginalNumber(float originalNumber) {
+        this.originalNumber = originalNumber;
+        int position = (int) (originalNumber * 10);
+
+        NumberSelectorAdapter adapter = (NumberSelectorAdapter) degreeRV.getAdapter();
+
+        Log.e("MENG","total:"+adapter.totalHolderCount);
+        Log.e("MENG","scroll to:"+position);
+
+
     }
 
     public NumberSelector(Context context) {
@@ -83,7 +99,7 @@ public class NumberSelector extends LinearLayout {
         super(context, attrs);
         this.context = context;
         LayoutInflater.from(context).inflate(R.layout.number_selector_layout,this);
-
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon_index);
         TypedArray ta = context.obtainStyledAttributes(attrs,R.styleable.NumberSelector);
         maxWeight = ta.getInteger(R.styleable.NumberSelector_max_number,100);
         minWeight = ta.getInteger(R.styleable.NumberSelector_min_number,0);
@@ -94,9 +110,23 @@ public class NumberSelector extends LinearLayout {
         intView();
         intiPaint();
         setWillNotDraw(false);
-        Log.e("MENG","init ");
+
+        this.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                int position = (int) (originalNumber * 10);
+                int first = layoutManagerDegree.findFirstVisibleItemPosition();
+                int last = layoutManagerDegree.findLastVisibleItemPosition();
+                degreeRV.smoothScrollToPosition(position+(last-first)/2+1);
+
+//                refreshSelectNumber();
+
+            }
+        },1000);
 
     }
+
+
 
     private void initData() {
 
@@ -153,6 +183,11 @@ public class NumberSelector extends LinearLayout {
 
 
 
+
+        canvas.drawBitmap(bitmap,
+                width/2-bitmap.getWidth()/2,
+                height - bitmap.getHeight()-2,paint);
+
         Log.e("MENG","on draw");
         super.onDraw(canvas);
     }
@@ -201,8 +236,6 @@ public class NumberSelector extends LinearLayout {
             }
         });
 
-        numberRV.scrollToPosition(numberList.size()/2);
-        degreeRV.scrollToPosition(degreeList.size()/2);
 
     }
 
@@ -220,21 +253,21 @@ public class NumberSelector extends LinearLayout {
         }
 
         if (selectedPosition!= oldSelectedPosition) {
-            try {
-                imageViews.get(selectedPosition).setImageDrawable(degree1);
-                imageViews.get(selectedPosition-1).setImageDrawable(degree2);
-                imageViews.get(selectedPosition+1).setImageDrawable(degree2);
-                imageViews.get(selectedPosition-2).setImageDrawable(degree3);
-                imageViews.get(selectedPosition+2).setImageDrawable(degree3);
-            } catch (Exception e) {
-                Log.e("MENG","null:"+e);
-            }
-
-            for (int i = 0; i<imageViews.size(); i++) {
-                if (selectedPosition-imageViews.keyAt(i)>2 || selectedPosition-imageViews.keyAt(i)<-2) {
-                    imageViews.valueAt(i).setImageDrawable(degree);
-                }
-            }
+//            try {
+//                imageViews.get(selectedPosition).setImageDrawable(degree1);
+//                imageViews.get(selectedPosition-1).setImageDrawable(degree2);
+//                imageViews.get(selectedPosition+1).setImageDrawable(degree2);
+//                imageViews.get(selectedPosition-2).setImageDrawable(degree3);
+//                imageViews.get(selectedPosition+2).setImageDrawable(degree3);
+//            } catch (Exception e) {
+//                Log.e("MENG","null:"+e);
+//            }
+//
+//            for (int i = 0; i<imageViews.size(); i++) {
+//                if (selectedPosition-imageViews.keyAt(i)>2 || selectedPosition-imageViews.keyAt(i)<-2) {
+//                    imageViews.valueAt(i).setImageDrawable(degree);
+//                }
+//            }
 
             if (selectedPosition % 10 == 0) {
                 selectedPositionNum = selectedPosition/10;
@@ -270,8 +303,8 @@ public class NumberSelector extends LinearLayout {
 
     class NumberSelectorAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private int totalHolderCount = 0;
-        private int totalTextCount = 0;
+        public int totalHolderCount = 0;
+        public int totalTextCount = 0;
         private List<Integer> data;
         private Context mContext;
         private LayoutInflater inflater;
@@ -307,11 +340,17 @@ public class NumberSelector extends LinearLayout {
 
             NumberSelectorViewHolder viewHolder = (NumberSelectorViewHolder) holder;
             if (type == DEGREE_TYPE) {
-                imageViews.put(position,viewHolder.image);
-                if (imageViews.size()>totalHolderCount) {
-                    imageViews.remove(position-totalHolderCount);
-                    imageViews.remove(position+totalHolderCount);
-                }
+//                Log.e("MENG","add -------------------:"+position);
+//
+//                imageViews.put(position,viewHolder.image);
+//                if (imageViews.size()>totalHolderCount) {
+//                    imageViews.remove(position-totalHolderCount);
+//                    imageViews.remove(position+totalHolderCount);
+//                }
+//
+//                for (int i = 0; i<imageViews.size();i++) {
+//                    Log.e("MENG","key----:"+imageViews.keyAt(i));
+//                }
 
 
             }  else {
